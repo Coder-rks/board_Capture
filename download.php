@@ -35,11 +35,11 @@ echo $_SESSION['student_user_id'];
     <div class="nav-wrapper container">
       <a id="logo-container" href="index.php" class="brand-logo">Board Capture</a>
       <ul class="right hide-on-med-and-down">
-        <li><a href="index.php">Logout</a></li>
+        <li><a href="logout.php">Logout</a></li>
       </ul>
 
       <ul id="nav-mobile" class="side-nav">
-        <li><a href="index.php">Logout</a></li>
+        <li><a href="logout.php">Logout</a></li>
       </ul>
       <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
     </div>
@@ -227,6 +227,6 @@ echo $_SESSION['student_user_id'];
 <?php
 } else {
 
-  echo "no user exist";
+  header("location:index.php");
 }
 ?>
