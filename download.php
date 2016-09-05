@@ -1,7 +1,8 @@
 <?php 
 session_start();
 include 'config.php'; 
-
+if(!empty($_SESSION['student_user_id'])){
+echo $_SESSION['student_user_id'];
 ?>
 
 <!-- .................................connectivity with database......................... -->
@@ -63,21 +64,21 @@ include 'config.php';
   <div class="container">
     <div class="row">
       <div class="col s1"></div>
-  				  <form id="download_form" >
-    				<div class="col s2">
-        				<div class="row center">
-        					<label>DATE</label>
-          					<input type="text" name="date"  class="datepicker">
-        				</div>    
-      				</div>
-       				<div class="col s1"></div>
-      				<!-- ............................. -->
-      				<div class="col s2">
-        				<div class="row center">
-        				<label>GROUP</label>
-          				<select id="group_name" name="group_name">
-          	 				<option value="" disabled selected>Choose Group</option>
-        			 		  <?php 
+            <form id="download_form" >
+            <div class="col s2">
+                <div class="row center">
+                  <label>DATE</label>
+                    <input type="text" name="date"  class="datepicker">
+                </div>    
+              </div>
+              <div class="col s1"></div>
+              <!-- ............................. -->
+              <div class="col s2">
+                <div class="row center">
+                <label>GROUP</label>
+                  <select id="group_name" name="group_name">
+                    <option value="" disabled selected>Choose Group</option>
+                    <?php 
                               $query = "SELECT * FROM `groups` WHERE `college_name` = '".$_SESSION['institute_name']."';";
                               $res = mysqli_query($connect, $query);
                               if (mysqli_num_rows($res) > 0) {
@@ -87,65 +88,65 @@ include 'config.php';
                               }    
                             }
                               ?>       
-						</select>
-						</div>    
-      				</div>
+            </select>
+            </div>    
+              </div>
 
-      				<!-- .............................. -->
-    					<div class="col s1"></div>
-				      <div class="col s2">
-				        <div class="row center">
-				         <label>ROOM</label>
-				          	<select name="room_no">
-				          	 <option value="" disabled selected>Choose room</option>
-				        			 <?php 
-				                              $query = "SELECT * FROM `rooms` WHERE `college_name` = '".$_SESSION['institute_name']."';";
-				                              $res = mysqli_query($connect, $query);
-				                              if (mysqli_num_rows($res) > 0) {
-				                              // output data of each row
-				                              
-				                              while($row = mysqli_fetch_assoc($res)) { 
+              <!-- .............................. -->
+              <div class="col s1"></div>
+              <div class="col s2">
+                <div class="row center">
+                 <label>ROOM</label>
+                    <select name="room_no">
+                     <option value="" disabled selected>Choose room</option>
+                       <?php 
+                                      $query = "SELECT * FROM `rooms` WHERE `college_name` = '".$_SESSION['institute_name']."';";
+                                      $res = mysqli_query($connect, $query);
+                                      if (mysqli_num_rows($res) > 0) {
+                                      // output data of each row
+                                      
+                                      while($row = mysqli_fetch_assoc($res)) { 
 
-				                               echo "<option>".$row['room_no']."</option>";
-				                            
-				                              }
-				                              
-				                            }
-				                              ?>       
-							</select>
-				         
-				        </div>    
-				      </div>
-				      <!-- .................................... -->
+                                       echo "<option>".$row['room_no']."</option>";
+                                    
+                                      }
+                                      
+                                    }
+                                      ?>       
+              </select>
+                 
+                </div>    
+              </div>
+              <!-- .................................... -->
 
-      					 <div class="col s1 "></div>
-			      		<div class="col s2" >
-			        			<div class="row center">
-			         				<label>TIME</label>
-			        						<div >
+                 <div class="col s1 "></div>
+                <div class="col s2" >
+                    <div class="row center">
+                      <label>TIME</label>
+                          <div >
 
-			    								<select name="time" id="hello">
-			    										<!-- <option value="" disabled selected>Choose time</option> -->
+                          <select name="time" id="hello">
+                              <!-- <option value="" disabled selected>Choose time</option> -->
 
-			    							
-			    								</select>
-												</div>
-			         
-			       						 </div>    
-			      				</div>
+                        
+                          </select>
+                        </div>
+               
+                         </div>    
+                    </div>
 
-			      	<!-- .................................... -->
+              <!-- .................................... -->
       <div class="row center">
-	       <button  id="map_device" class="btn-large waves-effect waves-light teal  lighten-1" ">SUBMIT</button>
-	       </div>
+         <button  id="map_device" class="btn-large waves-effect waves-light teal  lighten-1" ">SUBMIT</button>
+         </div>
     </form> 
 
 
  <div id="open_download_button">
- 		<div class="row center">
- 		 <a id="files_name" href="" download><button id="download_file_name"  class="btn-large waves-effect waves-light orange lighten-1"></button>
- 		 </a>
- 		 </div>
+    <div class="row center">
+     <a id="files_name" href="" download><button id="download_file_name"  class="btn-large waves-effect waves-light orange lighten-1"></button>
+     </a>
+     </div>
  </div>
 
 
@@ -174,34 +175,34 @@ include 'config.php';
     <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
   <script src="js/materialize.js"></script>
   <script src="js/init.js"></script>
-	<script>
-		$(document).ready(function() {
-	$('select').material_select();
- 	$('#open_download_button').hide();
- 	$("#download_form").submit(function(e) {
+  <script>
+    $(document).ready(function() {
+  $('select').material_select();
+  $('#open_download_button').hide();
+  $("#download_form").submit(function(e) {
       var formData = $( "form[id^='download_form']" ).serialize();
         $.post("api.php?action=download_file", formData, function(data){
           console.log(data);
-          		$('#files_name').attr('href','images/'+ data);
-          		$('#download_file_name').html(data);
-          	$('#open_download_button').show();
+              $('#files_name').attr('href','images/'+ data);
+              $('#download_file_name').html(data);
+            $('#open_download_button').show();
           
           
       });
       e.preventDefault();
    });    
 
- 	$('#group_name').change(function(e){
- 		
-			var value = $('#group_name').val();
-			$.post('api.php?action=fetch_time_slots',{group_name : value},function(data){
-				console.log(data);
-			$('select').material_select();
-				$('#hello').html( '<select>' + data + '</select>' );
-			});
-			e.preventDefault();
-		});
-		
+  $('#group_name').change(function(e){
+    
+      var value = $('#group_name').val();
+      $.post('api.php?action=fetch_time_slots',{group_name : value},function(data){
+        console.log(data);
+      $('select').material_select();
+        $('#hello').html( '<select>' + data + '</select>' );
+      });
+      e.preventDefault();
+    });
+    
  $('.datepicker').pickadate({
     selectMonths: true, // Creates a dropdown to control month
     
@@ -211,7 +212,7 @@ include 'config.php';
   });
 
 
-		});
+    });
 
 
 </script>
@@ -223,3 +224,9 @@ include 'config.php';
 
 </body>
 </html>
+<?php
+} else {
+
+  echo "no user exist";
+}
+?>
